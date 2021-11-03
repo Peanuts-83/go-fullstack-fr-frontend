@@ -7,7 +7,7 @@ https://github.com/OpenClassrooms-Student-Center/go-fullstack-fr-frontend
 
 
 ## Added securization for Git-repos - dotenv ##
-In order not to expose your confidential credentials to MongoDB, please use the <b>dotenv</b> module.
+In order not to expose your confidential credentials to MongoDB, please use the <b>dotenv</b> module. Add '.env' to '.gitignore' to keep your credentials private!
 
 * Reference documentation:
 https://github.com/motdotla/dotenv
