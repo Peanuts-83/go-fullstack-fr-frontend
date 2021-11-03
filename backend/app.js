@@ -5,9 +5,10 @@ const mongoose = require ('mongoose');    // connexion & gestion mongoDB
 const path = require('path');             // static path
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
+require('dotenv').config();   // secured credentials to mongoDB
 
 // Connexion a la DB
-mongoose.connect('mongodb+srv://Peanuts-83:<mdp_mongo>@peanutsmongo.17rt9.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.DB_user}:${process.env.DB_password}@${process.env.DB_address}?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected!'))
