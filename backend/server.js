@@ -1,13 +1,7 @@
+// SERVER HTTP
 const http = require('http');
 const app = require('./app');
-const mongoose = require ('mongoose');
 
-// Connexion a la DB
-mongoose.connect('mongodb+srv://Peanuts-83:H9pcNdqR4VT4jhqi@peanutsmongo.17rt9.mongodb.net/test?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected!'))
-  .catch(()=> console.log('MongoDB NOT connected...'));
 
 //la fonction normalizePort renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne
 const normalizePort = val => {

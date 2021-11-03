@@ -1,7 +1,18 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const Thing = require('./models/thing');
+// APPLICATION
+const express = require('express');         // creation server node.js
+const bodyParser = require('body-parser');  // form to json
+const mongoose = require ('mongoose');    // connexion & gestion mongoDB
+const path = require('path');             // static path
+const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
+
+// Connexion a la DB
+mongoose.connect('mongodb+srv://Peanuts-83:<mdp_mongo>@peanutsmongo.17rt9.mongodb.net/test?retryWrites=true&w=majority',
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected!'))
+  .catch(()=> console.log('MongoDB NOT connected...'));
+
 
 const app = express();
 
@@ -14,43 +25,8 @@ app.use((req,res,next) => {
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
-app.post('/api/stuff', (req,res,next) => {
-  delete req.body._id;
-  const thing = new Thing({...req.body});
-  thing.save()
-    .then(() => res.status(201).json({message: 'Object registered!'}))
-    .catch(error => res.status(400).json({error}));
-});
-
-app.get('/api/stuff/:id', (req,res,next) => {
-  Thing.findOne({_id: req.params.id})
-    .then(thing => res.status(200).json(thing))
-    .catch(error => {
-      console.log('Mon erreur: ', error);
-      res.status(400).json({error})
-    });
-})
-
-app.put('/api/stuff/:id', (req,res,next) => {
-  Thing.updateOne({_id: req.params.id}, {...req.body, _id:req.params.id})
-    .then(() => res.status(200).json({message: 'Object modified'}))
-    .catch(error => res.status(400).json({error}));
-});
-
-app.get('/api/stuff', (req, res, next) => {
-  Thing.find()
-    .then(things => res.status(200).json(things))
-    .catch(error => {
-      console.log('Mon erreur: ', error);
-      res.status(400).json({error})
-    });
-});
-
-app.delete('/api/stuff/:id', (req,res,next) => {
-  Thing.deleteOne({_id: req.params.id})
-    .then(() => res.status(200).json({message: 'Object deleted'}))
-    .catch(error => res.status(400).json({error}));
-});
+app.use('/images', express.static(path.join(__dirname, 'images')));   // rep 'images' static enregistré
+app.use('/api/stuff', stuffRoutes);   // appel de /routes/stuff.js pour DB
+app.use('/api/auth', userRoutes);     // appel de /routes/user.js pour AUTH
 
 module.exports = app;
